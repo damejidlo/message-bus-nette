@@ -1,0 +1,30 @@
+{
+    "name": "damejidlo/message-bus-nette-extension",
+    "description": "",
+    "type": "library",
+
+    "require": {
+        "php": ">=7.1",
+        "damejidlo/message-bus": "^0.9.0",
+        "nette/utils": "^2.4",
+        "nette/di": "^2.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Damejidlo\\": "src/"
+        }
+    },
+
+    "require-dev": {
+        "nette/tester": "^2.1",
+        "mockery/mockery": "^1.2",
+        "damejidlo/coding-standard": "^0.9.0",
+        "phpstan/phpstan": "^0.10.5",
+        "jakub-onderka/php-parallel-lint": "^1.0"
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/"
+        ]
+    }
+}
