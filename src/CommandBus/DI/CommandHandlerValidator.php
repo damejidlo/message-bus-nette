@@ -114,7 +114,7 @@ class CommandHandlerValidator
 			));
 		}
 
-		$handleMethodParameter = reset($handleMethodParameters);
+		$handleMethodParameter = $handleMethodParameters[0];
 
 		if ($handleMethodParameter->getName() !== 'command') {
 			throw new InvalidHandlerException(sprintf(
