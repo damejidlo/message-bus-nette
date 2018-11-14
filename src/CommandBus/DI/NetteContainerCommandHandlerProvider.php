@@ -8,14 +8,11 @@ use Damejidlo\CommandBus\ICommandHandler;
 use Damejidlo\CommandBus\ICommandHandlerProvider;
 use Nette\DI\Container;
 use Nette\DI\MissingServiceException;
-use Nette\SmartObject;
 
 
 
 final class NetteContainerCommandHandlerProvider implements ICommandHandlerProvider
 {
-
-	use SmartObject;
 
 	/**
 	 * @var Container

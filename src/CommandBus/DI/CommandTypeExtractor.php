@@ -3,16 +3,11 @@ declare(strict_types = 1);
 
 namespace Damejidlo\CommandBus\DI;
 
-use Nette\SmartObject;
 
 
 
 class CommandTypeExtractor
 {
-
-	use SmartObject;
-
-
 
 	/**
 	 * @param string $handlerServiceClass

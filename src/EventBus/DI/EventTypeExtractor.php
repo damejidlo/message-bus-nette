@@ -3,16 +3,11 @@ declare(strict_types = 1);
 
 namespace Damejidlo\EventBus\DI;
 
-use Nette\SmartObject;
 
 
 
 class EventTypeExtractor
 {
-
-	use SmartObject;
-
-
 
 	/**
 	 * @param string $subscriberServiceClass

@@ -4,14 +4,11 @@ declare(strict_types = 1);
 namespace Damejidlo\EventBus\DI;
 
 use Damejidlo\EventBus\IDomainEvent;
-use Nette\SmartObject;
 
 
 
 class EventSubscriberValidator
 {
-
-	use SmartObject;
 
 	private const EVENT_CLASS_NAME_SUFFIX = 'Event';
 	private const SUBSCRIBER_CLASS_NAME_EVENT_PREFIX = 'On';

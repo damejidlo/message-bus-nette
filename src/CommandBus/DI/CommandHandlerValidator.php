@@ -5,14 +5,11 @@ namespace Damejidlo\CommandBus\DI;
 
 use Damejidlo\CommandBus\ICommand;
 use Damejidlo\CommandBus\Implementation\NewEntityId;
-use Nette\SmartObject;
 
 
 
 class CommandHandlerValidator
 {
-
-	use SmartObject;
 
 	private const COMMAND_CLASS_NAME_SUFFIX = 'Command';
 	private const HANDLER_CLASS_NAME_SUFFIX = 'Handler';
