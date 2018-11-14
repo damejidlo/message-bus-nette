@@ -111,7 +111,7 @@ class EventSubscriberValidator
 			));
 		}
 
-		$handleMethodParameter = reset($handleMethodParameters);
+		$handleMethodParameter = $handleMethodParameters[0];
 
 		if ($handleMethodParameter->getName() !== 'event') {
 			throw new InvalidSubscriberException(sprintf(

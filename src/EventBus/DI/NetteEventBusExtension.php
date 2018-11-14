@@ -37,6 +37,9 @@ class NetteEventBusExtension extends CompilerExtension
 
 		foreach ($containerBuilder->findByType(IEventSubscriber::class) as $subscriberServiceDefinition) {
 			$subscriberType = $subscriberServiceDefinition->getType();
+			if ($subscriberType === NULL) {
+				throw new \LogicException('Type of subscriber service type must be defined in this context.');
+			}
 			$subscriberValidator->validate($subscriberType);
 
 			$eventType = $eventTypeExtractor->extract($subscriberType);

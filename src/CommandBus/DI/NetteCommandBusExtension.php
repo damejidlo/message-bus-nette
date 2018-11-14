@@ -37,6 +37,10 @@ class NetteCommandBusExtension extends CompilerExtension
 
 		foreach ($containerBuilder->findByType(ICommandHandler::class) as $handlerServiceDefinition) {
 			$handlerType = $handlerServiceDefinition->getType();
+			if ($handlerType === NULL) {
+				throw new \LogicException('Type of handler service type must be defined in this context.');
+			}
+
 			$handlerValidator->validate($handlerType);
 
 			$commandType = $commandTypeExtractor->extract($handlerType);
