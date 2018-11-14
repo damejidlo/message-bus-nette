@@ -6,7 +6,7 @@
     "require": {
         "php": ">=7.1",
         "damejidlo/message-bus": "^0.9.0",
-        "nette/di": "^2.4",
+        "nette/di": "^2.4.10",
         "nette/utils": "^2.4"
     },
     "autoload": {
