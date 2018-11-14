@@ -2,7 +2,7 @@
     "name": "damejidlo/message-bus-nette",
     "description": "",
     "type": "library",
-
+    "license": "BSD-3-Clause",
     "require": {
         "php": ">=7.1",
         "damejidlo/message-bus": "^0.9.0",
