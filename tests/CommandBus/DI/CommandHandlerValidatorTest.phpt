@@ -31,7 +31,7 @@ class CommandHandlerValidatorTest extends DjTestCase
 	public function testValidateSucceeds(string $handlerClassName) : void
 	{
 		$validator = new CommandHandlerValidator();
-		
+
 		Assert::noError(function () use ($validator, $handlerClassName) : void {
 			$validator->validate($handlerClassName);
 		});
@@ -108,7 +108,6 @@ final class ValidHandler implements ICommandHandler
 
 	public function handle(ValidCommand $command) : void
 	{
-
 	}
 
 }
@@ -144,7 +143,6 @@ class NotFinalHandler implements ICommandHandler
 	 */
 	public function handle(ValidCommand $command) : void
 	{
-
 	}
 
 }
@@ -166,7 +164,6 @@ final class HandleMethodNotPublicHandler implements ICommandHandler
 	 */
 	protected function handle(ValidCommand $command) : void
 	{
-
 	}
 
 }
@@ -178,7 +175,6 @@ final class HandleMethodHasNoParameterHandler implements ICommandHandler
 
 	public function handle() : void
 	{
-
 	}
 
 }
@@ -194,7 +190,6 @@ final class HandleMethodHasMoreParametersHandler implements ICommandHandler
 	 */
 	public function handle($foo, $bar) : void
 	{
-
 	}
 
 }
@@ -209,7 +204,6 @@ final class HandleMethodHasIncorrectlyNamedParameterHandler implements ICommandH
 	 */
 	public function handle(ValidCommand $foo) : void
 	{
-
 	}
 
 }
@@ -224,7 +218,6 @@ final class HandleMethodHasParameterWithIncorrectTypeHandler implements ICommand
 	 */
 	public function handle(string $command) : void
 	{
-
 	}
 
 }
@@ -239,7 +232,6 @@ final class HandleMethodHasNoReturnTypeHandler implements ICommandHandler
 	 */
 	public function handle(ValidCommand $command) : void
 	{
-
 	}
 
 }
@@ -291,7 +283,6 @@ final class NotFinalCommandHandler implements ICommandHandler
 	 */
 	public function handle(NotFinalCommand $command) : void
 	{
-
 	}
 
 }
@@ -315,7 +306,6 @@ final class CommandHasIncorrectNameHandler implements ICommandHandler
 	 */
 	public function handle(IncorrectName $command) : void
 	{
-
 	}
 
 }
@@ -330,7 +320,6 @@ final class CommandNameDoesNotMatchHandler implements ICommandHandler
 	 */
 	public function handle(ValidCommand $command) : void
 	{
-
 	}
 
 }

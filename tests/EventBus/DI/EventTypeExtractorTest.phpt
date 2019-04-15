@@ -49,7 +49,6 @@ class SomeSubscriber implements IEventSubscriber
 	 */
 	public function handle(SomeEvent $event) : void
 	{
-
 	}
 
 }
