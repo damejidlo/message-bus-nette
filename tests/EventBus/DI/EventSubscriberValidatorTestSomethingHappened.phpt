@@ -94,7 +94,6 @@ final class DoSomethingOnSomethingValidHappened implements IEventSubscriber
 	 */
 	public function handle(SomethingValidHappenedEvent $event) : void
 	{
-
 	}
 
 }
@@ -109,7 +108,6 @@ class NotFinalOnSomethingValidHappened implements IEventSubscriber
 	 */
 	public function handle(SomethingValidHappenedEvent $event) : void
 	{
-
 	}
 
 }
@@ -131,7 +129,6 @@ final class HandleMethodNotPublicOnSomethingValidHappened implements IEventSubsc
 	 */
 	protected function handle(SomethingValidHappenedEvent $event) : void
 	{
-
 	}
 
 }
@@ -143,7 +140,6 @@ final class HandleMethodHasNoParameterOnSomethingValidHappened implements IEvent
 
 	public function handle() : void
 	{
-
 	}
 
 }
@@ -159,7 +155,6 @@ final class HandleMethodHasMoreParametersOnSomethingValidHappened implements IEv
 	 */
 	public function handle($foo, $bar) : void
 	{
-
 	}
 
 }
@@ -174,7 +169,6 @@ final class HandleMethodHasIncorrectlyNamedParameterOnSomethingValidHappened imp
 	 */
 	public function handle(SomethingValidHappenedEvent $foo) : void
 	{
-
 	}
 
 }
@@ -189,7 +183,6 @@ final class HandleMethodHasParameterWithIncorrectTypeOnSomethingValidHappened im
 	 */
 	public function handle(string $event) : void
 	{
-
 	}
 
 }
@@ -205,7 +198,6 @@ final class HandleMethodHasNullReturnTypeOnSomethingValidHappened implements IEv
 	 */
 	public function handle(SomethingValidHappenedEvent $event)
 	{
-
 	}
 
 }
@@ -245,7 +237,6 @@ final class NotFinalEventOnSomethingInvalidHappened implements IEventSubscriber
 	 */
 	public function handle(SomethingInvalidHappenedEvent $event) : void
 	{
-
 	}
 
 }
@@ -269,7 +260,6 @@ final class EventHasIncorrectNameOnIncorrectName implements IEventSubscriber
 	 */
 	public function handle(IncorrectName $event) : void
 	{
-
 	}
 
 }
@@ -284,7 +274,6 @@ final class EventNameDoesNotMatchSubscriber implements IEventSubscriber
 	 */
 	public function handle(SomethingValidHappenedEvent $event) : void
 	{
-
 	}
 
 }

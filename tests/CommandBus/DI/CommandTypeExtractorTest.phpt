@@ -49,7 +49,6 @@ class SomeHandler implements ICommandHandler
 	 */
 	public function handle(SomeCommand $command) : void
 	{
-
 	}
 
 }

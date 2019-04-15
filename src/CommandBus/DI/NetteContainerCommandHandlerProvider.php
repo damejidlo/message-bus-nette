@@ -22,6 +22,8 @@ final class NetteContainerCommandHandlerProvider implements ICommandHandlerProvi
 	 */
 	private $container;
 
+
+
 	/**
 	 * @param Container $container
 	 */
