@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Damejidlo\CommandBus\DI;
 
 use Damejidlo\CommandBus\ICommandHandler;
-use Damejidlo\CommandBus\Implementation\CommandHandlerResolver;
+use Damejidlo\MessageBus\Handling\Implementation\ArrayMapHandlerTypesResolver;
 use Nette\DI\CompilerExtension;
 use Nette\DI\MissingServiceException;
 use Nette\DI\ServiceCreationException;
@@ -18,7 +18,7 @@ class NetteCommandBusExtension extends CompilerExtension
 	public function loadConfiguration() : void
 	{
 		$this->getContainerBuilder()->addDefinition($this->prefix('commandHandlerResolver'))
-			->setClass(CommandHandlerResolver::class);
+			->setClass(ArrayMapHandlerTypesResolver::class);
 
 		$this->getContainerBuilder()->addDefinition($this->prefix('commandHandlerProvider'))
 			->setType(NetteContainerCommandHandlerProvider::class);
@@ -35,6 +35,8 @@ class NetteCommandBusExtension extends CompilerExtension
 
 		$commandHandlerResolverDefinition = $this->getCommandHandlerResolverDefinition();
 
+		$handlerTypesByCommandType = [];
+
 		foreach ($containerBuilder->findByType(ICommandHandler::class) as $handlerServiceDefinition) {
 			$handlerType = $handlerServiceDefinition->getType();
 			if ($handlerType === NULL) {
@@ -45,11 +47,12 @@ class NetteCommandBusExtension extends CompilerExtension
 
 			$commandType = $commandTypeExtractor->extract($handlerType);
 
-			$commandHandlerResolverDefinition->addSetup('registerHandler', [
-				'commandType' => $commandType,
-				'handlerType' => $handlerType,
-			]);
+			$handlerTypesByCommandType[$commandType][] = $handlerType;
 		}
+
+		$commandHandlerResolverDefinition->setArguments([
+			'handlerTypesByMessageType' => $handlerTypesByCommandType,
+		]);
 	}
 
 
@@ -62,7 +65,7 @@ class NetteCommandBusExtension extends CompilerExtension
 	 */
 	private function getCommandHandlerResolverDefinition() : ServiceDefinition
 	{
-		return $this->getContainerBuilder()->getDefinitionByType(CommandHandlerResolver::class);
+		return $this->getContainerBuilder()->getDefinitionByType(ArrayMapHandlerTypesResolver::class);
 	}
 
 }

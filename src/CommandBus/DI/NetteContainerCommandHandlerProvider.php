@@ -3,16 +3,17 @@ declare(strict_types = 1);
 
 namespace Damejidlo\CommandBus\DI;
 
-use Damejidlo\CommandBus\CommandHandlerNotFoundException;
-use Damejidlo\CommandBus\ICommandHandler;
-use Damejidlo\CommandBus\ICommandHandlerProvider;
+use Damejidlo\MessageBus\Handling\HandlerCannotBeProvidedException;
+use Damejidlo\MessageBus\Handling\HandlerType;
+use Damejidlo\MessageBus\Handling\IHandlerProvider;
+use Damejidlo\MessageBus\IMessageHandler;
 use Nette\DI\Container;
 use Nette\DI\MissingServiceException;
 use Nette\SmartObject;
 
 
 
-final class NetteContainerCommandHandlerProvider implements ICommandHandlerProvider
+final class NetteContainerCommandHandlerProvider implements IHandlerProvider
 {
 
 	use SmartObject;
@@ -34,19 +35,18 @@ final class NetteContainerCommandHandlerProvider implements ICommandHandlerProvi
 
 
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getByType(string $handlerType) : ICommandHandler
+	public function get(HandlerType $type) : IMessageHandler
 	{
+		$typeAsString = $type->toString();
+
 		try {
-			/** @var ICommandHandler $handler */
-			$handler = $this->container->getByType($handlerType);
+			/** @var IMessageHandler $handler */
+			$handler = $this->container->getByType($typeAsString);
 
 			return $handler;
 
 		} catch (MissingServiceException $e) {
-			throw new CommandHandlerNotFoundException(sprintf('Command handler "%s" not found in DI container.', $handlerType), 0, $e);
+			throw new HandlerCannotBeProvidedException(sprintf('Command handler "%s" not found in DI container.', $typeAsString), 0, $e);
 		}
 	}
 

@@ -3,15 +3,16 @@ declare(strict_types = 1);
 
 namespace Damejidlo\EventBus\DI;
 
-use Damejidlo\EventBus\EventSubscriberNotFoundException;
-use Damejidlo\EventBus\IEventSubscriber;
-use Damejidlo\EventBus\IEventSubscriberProvider;
+use Damejidlo\MessageBus\Handling\HandlerCannotBeProvidedException;
+use Damejidlo\MessageBus\Handling\HandlerType;
+use Damejidlo\MessageBus\Handling\IHandlerProvider;
+use Damejidlo\MessageBus\IMessageHandler;
 use Nette\DI\Container;
 use Nette\DI\MissingServiceException;
 
 
 
-final class NetteContainerEventSubscriberProvider implements IEventSubscriberProvider
+final class NetteContainerEventSubscriberProvider implements IHandlerProvider
 {
 
 	/**
@@ -28,16 +29,18 @@ final class NetteContainerEventSubscriberProvider implements IEventSubscriberPro
 
 
 
-	public function getByType(string $subscriberType) : IEventSubscriber
+	public function get(HandlerType $type) : IMessageHandler
 	{
+		$typeAsString = $type->toString();
+
 		try {
-			/** @var IEventSubscriber $subscriber */
-			$subscriber = $this->container->getByType($subscriberType);
+			/** @var IMessageHandler $subscriber */
+			$subscriber = $this->container->getByType($typeAsString);
 
 			return $subscriber;
 
 		} catch (MissingServiceException $e) {
-			throw new EventSubscriberNotFoundException(sprintf('Event subscriber "%s" not found in DI container.', $subscriberType), 0, $e);
+			throw new HandlerCannotBeProvidedException(sprintf('Event subscriber "%s" not found in DI container.', $typeAsString), 0, $e);
 		}
 	}
 

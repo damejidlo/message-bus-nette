@@ -10,8 +10,9 @@ namespace DamejidloTests\EventBus\DI;
 require_once __DIR__ . '/../../bootstrap.php';
 
 use Damejidlo\EventBus\DI\NetteContainerEventSubscriberProvider;
-use Damejidlo\EventBus\EventSubscriberNotFoundException;
 use Damejidlo\EventBus\IEventSubscriber;
+use Damejidlo\MessageBus\Handling\HandlerCannotBeProvidedException;
+use Damejidlo\MessageBus\Handling\HandlerType;
 use DamejidloTests\DjTestCase;
 use Mockery;
 use Mockery\MockInterface;
@@ -27,30 +28,30 @@ class NetteContainerEventSubscriberProviderTest extends DjTestCase
 	public function testSuccess() : void
 	{
 		$subscriber = $this->mockEventHandler();
-		$subscriberType = get_class($subscriber);
+		$subscriberType = HandlerType::fromHandler($subscriber);
 
 		$container = $this->mockContainer();
-		$container->shouldReceive('getByType')->once()->with($subscriberType)->andReturn($subscriber);
+		$container->shouldReceive('getByType')->once()->with($subscriberType->toString())->andReturn($subscriber);
 
 		$provider = new NetteContainerEventSubscriberProvider($container);
 
-		Assert::same($subscriber, $provider->getByType($subscriberType));
+		Assert::same($subscriber, $provider->get($subscriberType));
 	}
 
 
 
 	public function testFailWhenRegisteredSubscriberServiceNotFound() : void
 	{
-		$subscriberType = 'FooSubscriber';
+		$subscriberType = HandlerType::fromString('FooSubscriber');
 
 		$container = $this->mockContainer();
-		$container->shouldReceive('getByType')->once()->with($subscriberType)->andThrow(MissingServiceException::class);
+		$container->shouldReceive('getByType')->once()->with($subscriberType->toString())->andThrow(MissingServiceException::class);
 
 		$provider = new NetteContainerEventSubscriberProvider($container);
 
 		Assert::exception(function () use ($provider, $subscriberType) : void {
-			$provider->getByType($subscriberType);
-		}, EventSubscriberNotFoundException::class);
+			$provider->get($subscriberType);
+		}, HandlerCannotBeProvidedException::class);
 	}
 
 

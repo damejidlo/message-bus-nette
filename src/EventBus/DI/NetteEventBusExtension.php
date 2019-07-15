@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Damejidlo\EventBus\DI;
 
 use Damejidlo\EventBus\IEventSubscriber;
-use Damejidlo\EventBus\Implementation\EventSubscribersResolver;
+use Damejidlo\MessageBus\Handling\Implementation\ArrayMapHandlerTypesResolver;
 use Nette\DI\CompilerExtension;
 use Nette\DI\MissingServiceException;
 use Nette\DI\ServiceCreationException;
@@ -18,7 +18,7 @@ class NetteEventBusExtension extends CompilerExtension
 	public function loadConfiguration() : void
 	{
 		$this->getContainerBuilder()->addDefinition($this->prefix('eventSubscribersResolver'))
-			->setType(EventSubscribersResolver::class);
+			->setType(ArrayMapHandlerTypesResolver::class);
 
 		$this->getContainerBuilder()->addDefinition($this->prefix('eventSubscriberProvider'))
 			->setType(NetteContainerEventSubscriberProvider::class);
@@ -35,6 +35,8 @@ class NetteEventBusExtension extends CompilerExtension
 
 		$eventSubscribersResolverDefinition = $this->getEventSubscribersResolverDefinition();
 
+		$subscriberTypesByEventType = [];
+
 		foreach ($containerBuilder->findByType(IEventSubscriber::class) as $subscriberServiceDefinition) {
 			$subscriberType = $subscriberServiceDefinition->getType();
 			if ($subscriberType === NULL) {
@@ -44,11 +46,12 @@ class NetteEventBusExtension extends CompilerExtension
 
 			$eventType = $eventTypeExtractor->extract($subscriberType);
 
-			$eventSubscribersResolverDefinition->addSetup('registerSubscriber', [
-				'eventType' => $eventType,
-				'subscriberType' => $subscriberType,
-			]);
+			$subscriberTypesByEventType[$eventType][] = $subscriberType;
 		}
+
+		$eventSubscribersResolverDefinition->setArguments([
+			'handlerTypesByMessageType' => $subscriberTypesByEventType,
+		]);
 	}
 
 
@@ -61,7 +64,7 @@ class NetteEventBusExtension extends CompilerExtension
 	 */
 	private function getEventSubscribersResolverDefinition() : ServiceDefinition
 	{
-		return $this->getContainerBuilder()->getDefinitionByType(EventSubscribersResolver::class);
+		return $this->getContainerBuilder()->getDefinitionByType(ArrayMapHandlerTypesResolver::class);
 	}
 
 }
