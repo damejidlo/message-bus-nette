@@ -1,6 +1,5 @@
 extensions:
-    commandBus: Damejidlo\CommandBus\DI\NetteCommandBusExtension
-    eventBus: Damejidlo\EventBus\DI\NetteEventBusExtension
+    messageBus: Damejidlo\MessageBus\DI\NetteMessageBusExtension
 
 services:
 	- DamejidloTests\Integration\Fixtures\PlaceOrderHandler

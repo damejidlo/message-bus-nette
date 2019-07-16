@@ -61,7 +61,7 @@ class IntegrationTest extends DjTestCase
 	public function testThatExtensionBuildsCommandHandlerTypesResolver() : void
 	{
 		/** @var ArrayMapHandlerTypesResolver $resolver */
-		$resolver = $this->container->getService('commandBus.commandHandlerResolver');
+		$resolver = $this->container->getService('messageBus.handlerResolver');
 
 		$command = new PlaceOrderCommand();
 		Assert::equal(
@@ -75,7 +75,7 @@ class IntegrationTest extends DjTestCase
 	public function testThatExtensionBuildsCommandHandlerProvider() : void
 	{
 		/** @var NetteContainerHandlerProvider $provider */
-		$provider = $this->container->getService('commandBus.commandHandlerProvider');
+		$provider = $this->container->getService('messageBus.handlerProvider');
 		$providedHandler = $provider->get(HandlerType::fromString(PlaceOrderHandler::class));
 
 		Assert::type(PlaceOrderHandler::class, $providedHandler);
@@ -86,7 +86,7 @@ class IntegrationTest extends DjTestCase
 	public function testThatExtensionBuildsEventSubscriberTypesResolver() : void
 	{
 		/** @var ArrayMapHandlerTypesResolver $resolver */
-		$resolver = $this->container->getService('eventBus.eventSubscribersResolver');
+		$resolver = $this->container->getService('messageBus.handlerResolver');
 
 		$event = new OrderPlacedEvent();
 
@@ -115,7 +115,7 @@ class IntegrationTest extends DjTestCase
 	public function testThatExtensionBuildsEventSubscribersProvider() : void
 	{
 		/** @var NetteContainerHandlerProvider $provider */
-		$provider = $this->container->getService('eventBus.eventSubscriberProvider');
+		$provider = $this->container->getService('messageBus.handlerProvider');
 		$providedSubscriber = $provider->get(HandlerType::fromString(NotifyCustomerOnOrderPlaced::class));
 
 		Assert::type(NotifyCustomerOnOrderPlaced::class, $providedSubscriber);
