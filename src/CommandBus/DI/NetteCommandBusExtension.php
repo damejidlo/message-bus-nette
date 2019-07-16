@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Damejidlo\CommandBus\DI;
 
 use Damejidlo\CommandBus\ICommandHandler;
+use Damejidlo\MessageBus\DI\NetteContainerHandlerProvider;
 use Damejidlo\MessageBus\Handling\Implementation\ArrayMapHandlerTypesResolver;
 use Nette\DI\CompilerExtension;
 use Nette\DI\MissingServiceException;
@@ -26,7 +27,7 @@ class NetteCommandBusExtension extends CompilerExtension
 			->setClass(ArrayMapHandlerTypesResolver::class);
 
 		$this->getContainerBuilder()->addDefinition($this->prefix(self::PROVIDER_SERVICE_NAME))
-			->setType(NetteContainerCommandHandlerProvider::class);
+			->setType(NetteContainerHandlerProvider::class);
 	}
 
 

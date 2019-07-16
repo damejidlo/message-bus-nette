@@ -5,12 +5,12 @@ declare(strict_types = 1);
  * @testCase
  */
 
-namespace DamejidloTests\CommandBus\DI;
+namespace DamejidloTests\MessageBus\DI;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-use Damejidlo\CommandBus\DI\NetteContainerCommandHandlerProvider;
 use Damejidlo\CommandBus\ICommandHandler;
+use Damejidlo\MessageBus\DI\NetteContainerHandlerProvider;
 use Damejidlo\MessageBus\Handling\HandlerCannotBeProvidedException;
 use Damejidlo\MessageBus\Handling\HandlerType;
 use DamejidloTests\DjTestCase;
@@ -22,7 +22,7 @@ use Tester\Assert;
 
 
 
-class NetteContainerCommandHandlerProviderTest extends DjTestCase
+class NetteContainerHandlerProviderTest extends DjTestCase
 {
 
 	public function testSuccess() : void
@@ -33,7 +33,7 @@ class NetteContainerCommandHandlerProviderTest extends DjTestCase
 		$container = $this->mockContainer();
 		$container->shouldReceive('getByType')->once()->with($handlerType->toString())->andReturn($handler);
 
-		$provider = new NetteContainerCommandHandlerProvider($container);
+		$provider = new NetteContainerHandlerProvider($container);
 
 		Assert::same($handler, $provider->get($handlerType));
 	}
@@ -47,7 +47,7 @@ class NetteContainerCommandHandlerProviderTest extends DjTestCase
 		$container = $this->mockContainer();
 		$container->shouldReceive('getByType')->once()->with($handlerType->toString())->andThrow(MissingServiceException::class);
 
-		$provider = new NetteContainerCommandHandlerProvider($container);
+		$provider = new NetteContainerHandlerProvider($container);
 
 		Assert::exception(function () use ($provider, $handlerType) : void {
 			$provider->get($handlerType);
@@ -80,4 +80,4 @@ class NetteContainerCommandHandlerProviderTest extends DjTestCase
 
 }
 
-(new NetteContainerCommandHandlerProviderTest())->run();
+(new NetteContainerHandlerProviderTest())->run();

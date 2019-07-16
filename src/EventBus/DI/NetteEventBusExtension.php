@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Damejidlo\EventBus\DI;
 
 use Damejidlo\EventBus\IEventSubscriber;
+use Damejidlo\MessageBus\DI\NetteContainerHandlerProvider;
 use Damejidlo\MessageBus\Handling\Implementation\ArrayMapHandlerTypesResolver;
 use Nette\DI\CompilerExtension;
 use Nette\DI\MissingServiceException;
@@ -26,7 +27,7 @@ class NetteEventBusExtension extends CompilerExtension
 			->setType(ArrayMapHandlerTypesResolver::class);
 
 		$this->getContainerBuilder()->addDefinition($this->prefix(self::PROVIDER_SERVICE_NAME))
-			->setType(NetteContainerEventSubscriberProvider::class);
+			->setType(NetteContainerHandlerProvider::class);
 	}
 
 

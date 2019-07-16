@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Damejidlo\CommandBus\DI;
+namespace Damejidlo\MessageBus\DI;
 
 use Damejidlo\MessageBus\Handling\HandlerCannotBeProvidedException;
 use Damejidlo\MessageBus\Handling\HandlerType;
@@ -13,7 +13,7 @@ use Nette\SmartObject;
 
 
 
-final class NetteContainerCommandHandlerProvider implements IHandlerProvider
+final class NetteContainerHandlerProvider implements IHandlerProvider
 {
 
 	use SmartObject;
@@ -46,7 +46,7 @@ final class NetteContainerCommandHandlerProvider implements IHandlerProvider
 			return $handler;
 
 		} catch (MissingServiceException $e) {
-			throw new HandlerCannotBeProvidedException(sprintf('Command handler "%s" not found in DI container.', $typeAsString), 0, $e);
+			throw new HandlerCannotBeProvidedException(sprintf('Message handler "%s" not found in DI container.', $typeAsString), 0, $e);
 		}
 	}
 

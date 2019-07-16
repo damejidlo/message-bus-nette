@@ -9,8 +9,7 @@ namespace DamejidloTests\Integration;
 
 require_once __DIR__ . '/../bootstrap.php';
 
-use Damejidlo\CommandBus\DI\NetteContainerCommandHandlerProvider;
-use Damejidlo\EventBus\DI\NetteContainerEventSubscriberProvider;
+use Damejidlo\MessageBus\DI\NetteContainerHandlerProvider;
 use Damejidlo\MessageBus\Handling\HandlerType;
 use Damejidlo\MessageBus\Handling\Implementation\ArrayMapHandlerTypesResolver;
 use Damejidlo\MessageBus\Handling\MessageType;
@@ -75,7 +74,7 @@ class IntegrationTest extends DjTestCase
 
 	public function testThatExtensionBuildsCommandHandlerProvider() : void
 	{
-		/** @var NetteContainerCommandHandlerProvider $provider */
+		/** @var NetteContainerHandlerProvider $provider */
 		$provider = $this->container->getService('commandBus.commandHandlerProvider');
 		$providedHandler = $provider->get(HandlerType::fromString(PlaceOrderHandler::class));
 
@@ -115,7 +114,7 @@ class IntegrationTest extends DjTestCase
 
 	public function testThatExtensionBuildsEventSubscribersProvider() : void
 	{
-		/** @var NetteContainerEventSubscriberProvider $provider */
+		/** @var NetteContainerHandlerProvider $provider */
 		$provider = $this->container->getService('eventBus.eventSubscriberProvider');
 		$providedSubscriber = $provider->get(HandlerType::fromString(NotifyCustomerOnOrderPlaced::class));
 
