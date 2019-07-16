@@ -29,6 +29,7 @@ class IntegrationTest extends DjTestCase
 {
 
 	private const FIXTURES_DIRECTORY = __DIR__ . '/Fixtures';
+	private const TEMP_DIRECTORY = __DIR__ . '/../../temp';
 
 	/**
 	 * @var Container
@@ -49,7 +50,7 @@ class IntegrationTest extends DjTestCase
 	private function compileContainer() : void
 	{
 		$configurator = new Configurator();
-		$configurator->setTempDirectory(self::FIXTURES_DIRECTORY);
+		$configurator->setTempDirectory(self::TEMP_DIRECTORY);
 		$configurator->setDebugMode(TRUE);
 		$configurator->addConfig(self::FIXTURES_DIRECTORY . '/config.neon');
 
