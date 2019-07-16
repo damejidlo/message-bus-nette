@@ -32,4 +32,4 @@ autoload:
 .PHONY: test
 test: autoload
 	vendor/bin/tester --info
-	vendor/bin/tester tests
+	vendor/bin/tester -c tests/php.ini tests

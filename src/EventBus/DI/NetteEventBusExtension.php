@@ -15,12 +15,17 @@ use Nette\DI\ServiceDefinition;
 class NetteEventBusExtension extends CompilerExtension
 {
 
+	private const RESOLVER_SERVICE_NAME = 'eventSubscribersResolver';
+	private const PROVIDER_SERVICE_NAME = 'eventSubscriberProvider';
+
+
+
 	public function loadConfiguration() : void
 	{
-		$this->getContainerBuilder()->addDefinition($this->prefix('eventSubscribersResolver'))
+		$this->getContainerBuilder()->addDefinition($this->prefix(self::RESOLVER_SERVICE_NAME))
 			->setType(ArrayMapHandlerTypesResolver::class);
 
-		$this->getContainerBuilder()->addDefinition($this->prefix('eventSubscriberProvider'))
+		$this->getContainerBuilder()->addDefinition($this->prefix(self::PROVIDER_SERVICE_NAME))
 			->setType(NetteContainerEventSubscriberProvider::class);
 	}
 
@@ -64,7 +69,7 @@ class NetteEventBusExtension extends CompilerExtension
 	 */
 	private function getEventSubscribersResolverDefinition() : ServiceDefinition
 	{
-		return $this->getContainerBuilder()->getDefinitionByType(ArrayMapHandlerTypesResolver::class);
+		return $this->getContainerBuilder()->getDefinition($this->prefix(self::RESOLVER_SERVICE_NAME));
 	}
 
 }

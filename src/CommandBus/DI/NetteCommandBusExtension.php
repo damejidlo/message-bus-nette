@@ -15,12 +15,17 @@ use Nette\DI\ServiceDefinition;
 class NetteCommandBusExtension extends CompilerExtension
 {
 
+	private const RESOLVER_SERVICE_NAME = 'commandHandlerResolver';
+	private const PROVIDER_SERVICE_NAME = 'commandHandlerProvider';
+
+
+
 	public function loadConfiguration() : void
 	{
-		$this->getContainerBuilder()->addDefinition($this->prefix('commandHandlerResolver'))
+		$this->getContainerBuilder()->addDefinition($this->prefix(self::RESOLVER_SERVICE_NAME))
 			->setClass(ArrayMapHandlerTypesResolver::class);
 
-		$this->getContainerBuilder()->addDefinition($this->prefix('commandHandlerProvider'))
+		$this->getContainerBuilder()->addDefinition($this->prefix(self::PROVIDER_SERVICE_NAME))
 			->setType(NetteContainerCommandHandlerProvider::class);
 	}
 
@@ -65,7 +70,7 @@ class NetteCommandBusExtension extends CompilerExtension
 	 */
 	private function getCommandHandlerResolverDefinition() : ServiceDefinition
 	{
-		return $this->getContainerBuilder()->getDefinitionByType(ArrayMapHandlerTypesResolver::class);
+		return $this->getContainerBuilder()->getDefinition($this->prefix(self::RESOLVER_SERVICE_NAME));
 	}
 
 }
