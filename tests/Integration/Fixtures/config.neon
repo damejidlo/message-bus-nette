@@ -1,0 +1,10 @@
+extensions:
+    messageBus: Damejidlo\MessageBus\DI\NetteMessageBusExtension
+
+services:
+	- DamejidloTests\Integration\Fixtures\PlaceOrderHandler
+	- DamejidloTests\Integration\Fixtures\CreateInvoiceOnOrderPlaced
+	- DamejidloTests\Integration\Fixtures\NotifyCustomerOnOrderPlaced
+
+di:
+    debugger: false

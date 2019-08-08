@@ -5,13 +5,14 @@ declare(strict_types = 1);
  * @testCase
  */
 
-namespace DamejidloTests\CommandBus\DI;
+namespace DamejidloTests\MessageBus\DI;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-use Damejidlo\CommandBus\CommandHandlerNotFoundException;
-use Damejidlo\CommandBus\DI\NetteContainerCommandHandlerProvider;
 use Damejidlo\CommandBus\ICommandHandler;
+use Damejidlo\MessageBus\DI\NetteContainerHandlerProvider;
+use Damejidlo\MessageBus\Handling\HandlerCannotBeProvidedException;
+use Damejidlo\MessageBus\Handling\HandlerType;
 use DamejidloTests\DjTestCase;
 use Mockery;
 use Mockery\MockInterface;
@@ -21,36 +22,36 @@ use Tester\Assert;
 
 
 
-class NetteContainerCommandHandlerProviderTest extends DjTestCase
+class NetteContainerHandlerProviderTest extends DjTestCase
 {
 
 	public function testSuccess() : void
 	{
 		$handler = $this->mockCommandHandler();
-		$handlerType = get_class($handler);
+		$handlerType = HandlerType::fromHandler($handler);
 
 		$container = $this->mockContainer();
-		$container->shouldReceive('getByType')->once()->with($handlerType)->andReturn($handler);
+		$container->shouldReceive('getByType')->once()->with($handlerType->toString())->andReturn($handler);
 
-		$provider = new NetteContainerCommandHandlerProvider($container);
+		$provider = new NetteContainerHandlerProvider($container);
 
-		Assert::same($handler, $provider->getByType($handlerType));
+		Assert::same($handler, $provider->get($handlerType));
 	}
 
 
 
 	public function testFailWhenRegisteredHandlerServiceNotFound() : void
 	{
-		$handlerType = 'FooHandler';
+		$handlerType = HandlerType::fromString('FooHandler');
 
 		$container = $this->mockContainer();
-		$container->shouldReceive('getByType')->once()->with($handlerType)->andThrow(MissingServiceException::class);
+		$container->shouldReceive('getByType')->once()->with($handlerType->toString())->andThrow(MissingServiceException::class);
 
-		$provider = new NetteContainerCommandHandlerProvider($container);
+		$provider = new NetteContainerHandlerProvider($container);
 
 		Assert::exception(function () use ($provider, $handlerType) : void {
-			$provider->getByType($handlerType);
-		}, CommandHandlerNotFoundException::class);
+			$provider->get($handlerType);
+		}, HandlerCannotBeProvidedException::class);
 	}
 
 
@@ -79,4 +80,4 @@ class NetteContainerCommandHandlerProviderTest extends DjTestCase
 
 }
 
-(new NetteContainerCommandHandlerProviderTest())->run();
+(new NetteContainerHandlerProviderTest())->run();

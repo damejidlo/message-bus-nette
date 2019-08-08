@@ -5,9 +5,9 @@
     "license": "BSD-3-Clause",
     "require": {
         "php": ">=7.2",
-        "damejidlo/message-bus": "^0.10.0",
+        "damejidlo/message-bus": "^0.11.1",
         "nette/di": "^2.4.10",
-        "nette/utils": "^2.4"
+        "nette/utils": "^2.4.5"
     },
     "autoload": {
         "psr-4": {
@@ -22,11 +22,12 @@
         "nette/tester": "^2.2",
         "phpstan/phpstan": "^0.11.5",
         "phpstan/phpstan-mockery": "^0.11",
-        "phpstan/phpstan-shim": "^0.11.5"
+        "phpstan/phpstan-shim": "^0.11.5",
+        "nette/bootstrap": "^2"
     },
     "autoload-dev": {
-        "classmap": [
-            "tests/"
-        ]
+        "psr-4": {
+            "DamejidloTests\\": "tests/"
+        }
     }
 }
