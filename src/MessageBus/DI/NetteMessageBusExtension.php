@@ -3,13 +3,11 @@ declare(strict_types = 1);
 
 namespace Damejidlo\MessageBus\DI;
 
-use Damejidlo\CommandBus\DI\CommandHandlerValidator;
-use Damejidlo\CommandBus\DI\CommandTypeExtractor;
-use Damejidlo\CommandBus\ICommandHandler;
-use Damejidlo\EventBus\DI\EventSubscriberValidator;
-use Damejidlo\EventBus\DI\EventTypeExtractor;
-use Damejidlo\EventBus\IEventSubscriber;
+use Damejidlo\MessageBus\Handling\HandlerType;
 use Damejidlo\MessageBus\Handling\Implementation\ArrayMapHandlerTypesResolver;
+use Damejidlo\MessageBus\IMessageHandler;
+use Damejidlo\MessageBus\StaticAnalysis\MessageHandlerValidatorFactory;
+use Damejidlo\MessageBus\StaticAnalysis\MessageTypeExtractor;
 use Nette\DI\CompilerExtension;
 use Nette\DI\MissingServiceException;
 use Nette\DI\ServiceCreationException;
@@ -40,7 +38,7 @@ class NetteMessageBusExtension extends CompilerExtension
 	{
 		$handlerResolverDefinition = $this->getHandlerResolverDefinition();
 
-		$handlerTypesByMessageType = $this->findAndValidateCommandHandlers() + $this->findAndValidateEventSubscribers();
+		$handlerTypesByMessageType = $this->findAndValidateHandlers();
 
 		$handlerResolverDefinition->setArguments([
 			'handlerTypesByMessageType' => $handlerTypesByMessageType,
@@ -52,58 +50,30 @@ class NetteMessageBusExtension extends CompilerExtension
 	/**
 	 * @return string[][]
 	 */
-	private function findAndValidateCommandHandlers() : array
+	private function findAndValidateHandlers() : array
 	{
 		$containerBuilder = $this->getContainerBuilder();
 
-		$handlerValidator = new CommandHandlerValidator();
-		$commandTypeExtractor = new CommandTypeExtractor();
+		$handlerValidator = MessageHandlerValidatorFactory::createDefault();
+		$messageTypeExtractor = new MessageTypeExtractor();
 
 		$handlerTypesByCommandType = [];
 
-		foreach ($containerBuilder->findByType(ICommandHandler::class) as $handlerServiceDefinition) {
-			$handlerType = $handlerServiceDefinition->getType();
-			if ($handlerType === NULL) {
+		foreach ($containerBuilder->findByType(IMessageHandler::class) as $handlerServiceDefinition) {
+			$handlerTypeString = $handlerServiceDefinition->getType();
+			if ($handlerTypeString === NULL) {
 				throw new \LogicException('Type of handler service type must be defined in this context.');
 			}
 
+			$handlerType = HandlerType::fromString($handlerTypeString);
 			$handlerValidator->validate($handlerType);
 
-			$commandType = $commandTypeExtractor->extract($handlerType);
+			$commandType = $messageTypeExtractor->extract($handlerType, 'handle');
 
-			$handlerTypesByCommandType[$commandType][] = $handlerType;
+			$handlerTypesByCommandType[$commandType->toString()][] = $handlerType->toString();
 		}
 
 		return $handlerTypesByCommandType;
-	}
-
-
-
-	/**
-	 * @return string[][]
-	 */
-	private function findAndValidateEventSubscribers() : array
-	{
-		$containerBuilder = $this->getContainerBuilder();
-
-		$subscriberValidator = new EventSubscriberValidator();
-		$eventTypeExtractor = new EventTypeExtractor();
-
-		$subscriberTypesByEventType = [];
-
-		foreach ($containerBuilder->findByType(IEventSubscriber::class) as $subscriberServiceDefinition) {
-			$subscriberType = $subscriberServiceDefinition->getType();
-			if ($subscriberType === NULL) {
-				throw new \LogicException('Type of subscriber service type must be defined in this context.');
-			}
-			$subscriberValidator->validate($subscriberType);
-
-			$eventType = $eventTypeExtractor->extract($subscriberType);
-
-			$subscriberTypesByEventType[$eventType][] = $subscriberType;
-		}
-
-		return $subscriberTypesByEventType;
 	}
 
 

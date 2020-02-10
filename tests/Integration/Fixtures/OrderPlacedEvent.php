@@ -2,11 +2,11 @@
 
 namespace DamejidloTests\Integration\Fixtures;
 
-use Damejidlo\EventBus\IDomainEvent;
+use Damejidlo\MessageBus\Events\IEvent;
 
 
 
-final class OrderPlacedEvent implements IDomainEvent
+final class OrderPlacedEvent implements IEvent
 {
 
 }

@@ -9,7 +9,7 @@ namespace DamejidloTests\MessageBus\DI;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-use Damejidlo\CommandBus\ICommandHandler;
+use Damejidlo\MessageBus\Commands\ICommandHandler;
 use Damejidlo\MessageBus\DI\NetteContainerHandlerProvider;
 use Damejidlo\MessageBus\Handling\HandlerCannotBeProvidedException;
 use Damejidlo\MessageBus\Handling\HandlerType;
