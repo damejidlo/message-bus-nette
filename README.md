@@ -1,5 +1,9 @@
 # message-bus-nette
 
+## Abandoned
+
+Use fork at https://github.com/ondrejbouda/message-bus-nette or very similar library https://github.com/nepada/message-bus-nette .
+
 ## How to contribute
 
 * fork this repo
